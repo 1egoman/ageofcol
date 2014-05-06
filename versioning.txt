@@ -1,0 +1,28 @@
+02B:
+- Stacking of items implemented
+- Bugs Fixed:
+  - Camps no longer have the appearance of having an inventory
+  - Pipes implemented for moving around items
+
+02A:
+- Inventory Overhaul (Moving of items possible!)
+- Villagers appear in villages
+- Added Iron and Coal
+- Ores are Refineable (when in the inventory of a village)
+- Bugs Fixed:
+  - No More 'UnitMeat'
+
+01B:
+- Economy (Only Paying for now)
+- Camps
+- Woodyards (LumberYards)
+- OreMines (Mines)
+- Water Buckets
+
+01A:
+- Inventorys
+- Signs
+- Units redesigned
+
+Start:
+- Basic Program
