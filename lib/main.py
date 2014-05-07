@@ -6,6 +6,7 @@ import json
 import common
 import launcher
 import settings
+import sounds
 from events import *
 from graphics import *
 from entity import entity
@@ -34,9 +35,11 @@ class main(object):
     common.en = entity()
     common.cv = civilization()
     common.g = graphics()
+    common.sounds = sounds.sounds()
 
     # initialize pygame
     pygame.init()
+
 
     # Read from config file
     opt = open(os.path.join(common.rootdir, "options.json"), 'r')
@@ -97,6 +100,7 @@ class main(object):
       for event in pygame.event.get():
         common.e.newevent(event)
       # TODO: insert mainloop code
+      #sounds.bgmusic()
       common.g.render()
     common.running = False
     self.cleanup()

@@ -13,12 +13,13 @@ from structures import *
 from pygame.locals import *
 from inventory import playertotals, drawInv
 from panel import morepanel
+from math import pi
 
 import entity
 
 class graphics(object):
   gridcolor = (180,180,180)
-  pi = 3.141415 # Converting degrees to radians
+  #pi = 3.1415 # Converting degrees to radians
 
   def __init__(self):
     pygame.font.init()
@@ -502,6 +503,7 @@ class graphics(object):
 
   def renderMinimap(self):
     if not common.showminimap: return
+    if not common.cb.hide: return
     spacing = 300
 
     # generate the tile width, both horizontally or verically

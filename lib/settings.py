@@ -24,10 +24,13 @@ class pausemenu(object):
   def renderpause(self):
     self.bx = (common.width-self.bw)/2
 
+
+
     if self.pevent and self.pevent.type == pygame.MOUSEBUTTONDOWN:
       button = (self.pevent.pos[1]-self.by)/75
     else:
       button = -1
+
 
     if button == 0:
       pygame.draw.rect(common.screen, (150,150,150), (self.bx,0+self.by,self.bw,50))
@@ -36,6 +39,8 @@ class pausemenu(object):
     rndr = common.g.largefont.render("Resume Game", True, (255,255,255))
     common.screen.blit(rndr, ((common.width-rndr.get_width())/2, 10+self.by))
 
+
+
     if button == 1:
       pygame.draw.rect(common.screen, (150,150,150), (self.bx,75+self.by,self.bw,50))
     else:
@@ -43,12 +48,16 @@ class pausemenu(object):
     rndr = common.g.largefont.render("Settings", True, (255,255,255))
     common.screen.blit(rndr, ((common.width-rndr.get_width())/2, 85+self.by)) 
   
+
+
     if button == 2:
       pygame.draw.rect(common.screen, (150,150,150), (self.bx,150+self.by,self.bw,50))
     else:
       pygame.draw.rect(common.screen, (180,180,180), (self.bx,150+self.by,self.bw,50))
     rndr = common.g.largefont.render("Save Game", True, (255,255,255))
     common.screen.blit(rndr, ((common.width-rndr.get_width())/2, 160+self.by))
+
+
 
     if button == 3:
       pygame.draw.rect(common.screen, (150,150,150), (self.bx,225+self.by,self.bw,50))
@@ -198,4 +207,5 @@ class settings(object):
     f = open(os.path.join(common.rootdir, "options.yml"), "w+")
     f.write("texturepack: "+str(self.texture[1])+"\n")
     f.write("sky: "+str(common.enablesky)+"\n")
+    f.write("")
     f.close()

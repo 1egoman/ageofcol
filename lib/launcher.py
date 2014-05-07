@@ -24,7 +24,7 @@ class launcher(object):
     try:
       import urllib2
       self.json = json.loads( urllib2.urlopen(self.path).read() )
-    except IndexError, urllib2.URLERROR:
+    except Exception:
       self.json = [{'ERROR: CANNOT FETCH VERSIONS FILE': []}]
 
     self.loop()
@@ -86,7 +86,7 @@ class launcher(object):
         rndr = font.render("- "+str(i), True, versioncolor)
         common.screen.blit(rndr, (140,(sectionheight*ct)+(c*15)+175+self.voffset))
 
-    self.vmaxheight = (sectionheight*ct)+(c*15)+175+10
+        self.vmaxheight = (sectionheight*ct)+(c*15)+175+10
 
 
     # Draw the logo centered

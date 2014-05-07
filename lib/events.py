@@ -79,6 +79,7 @@ class event(object):
         print "Paused:", common.paused
 
       elif event.key == K_m:
+        if not common.cb.hide: return
         common.showminimap = not common.showminimap
         common.mmapy = common.mmaph+5
 
@@ -220,6 +221,7 @@ class event(object):
 
           # 'darken' that tile
           common.seltool = (mx-toolbarside)/common.tilewidth
+
 
 
 

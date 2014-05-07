@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import common
+import os
 import pygame
 from pygame.locals import *
 import economy
@@ -18,7 +19,7 @@ def run(command):
 
     if cmd == "/help" or cmd == "/?":
       post("TODO: add some help!")
-
+      post("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 
 
@@ -72,13 +73,19 @@ def run(command):
     elif cmd == "/spawn":
       if args[0] == "unit":
         unit(common.username,50,50)
+      else:
+        post("Unknown Mob Type")
+
+
+    elif cmd == "/changeusername":
+      common.username = args[0]
 
 
 
 
 
     else:
-      post("Unknown Command. Run /help for help.")
+      post("Unknown Command. Run /help for Help.")
 
   else:
     # Just talk

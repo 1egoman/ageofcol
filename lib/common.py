@@ -1,13 +1,12 @@
 #!/usr/bin/python
 import os
 
-
 running = False
 screen = None
 
-bypasslauncher = True
+bypasslauncher = False
 inlauncher = False
-name = "Age of Colonization"
+name = "Colony Game"
 version = "0.3A"
 width = 1000
 height = 800
@@ -71,3 +70,9 @@ reverseposts = False
 rootdir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 enablesky = True
+
+mastervolume = 100
+mastervolumefactor = mastervolume/100  #Used to affect musicvolume and sfx volume
+
+musicvolume = 50
+sfxvolume = 50
