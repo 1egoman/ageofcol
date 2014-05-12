@@ -61,6 +61,9 @@ class main(object):
     # Set Cursor
     common.g.setCursor(common.cursor)
 
+    #Starts music
+    common.sounds.playmusic("Into_the_Unknown")
+
     self.fromlauncher()
 
   def fromlauncher(self):
@@ -100,7 +103,6 @@ class main(object):
       for event in pygame.event.get():
         common.e.newevent(event)
       # TODO: insert mainloop code
-      #sounds.bgmusic()
       common.g.render()
     common.running = False
     self.cleanup()

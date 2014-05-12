@@ -72,7 +72,5 @@ rootdir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 enablesky = True
 
 mastervolume = 100
-mastervolumefactor = mastervolume/100  #Used to affect musicvolume and sfx volume
-
-musicvolume = 50
-sfxvolume = 50
+musicvolume = 100
+sfxvolume = 100

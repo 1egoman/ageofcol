@@ -6,9 +6,12 @@ from pygame.locals import *
 import economy
 from ai import unit
 import entity
+import sounds
 
 global posts
 posts = []
+
+common.sounds = sounds.sounds()
 
 def run(command):
 
@@ -79,6 +82,23 @@ def run(command):
 
     elif cmd == "/changeusername":
       common.username = args[0]
+
+
+    #Set master/music/sfx volume until settings implemented version
+    elif cmd == "/mtvol":
+      common.mastervolume = float(args[0])
+      common.sounds.setvolumes()
+      post("Master Volume: " + str(common.mastervolume))
+
+    elif cmd == "/mscvol":
+      common.musicvolume = float(args[0])
+      common.sounds.setvolumes()
+      post("Music Volume: " + str(common.musicvolume))
+
+    elif cmd == "/sfxvol":
+      common.sfxvolume = float(args[0])
+      common.sounds.setvolumes()
+      post("Sound Effects Volume: " + str(common.sfxvolume))
 
 
 

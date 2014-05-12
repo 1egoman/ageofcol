@@ -5,6 +5,7 @@ from os.path import join
 import settings
 import pygame
 
+
 class sounds(object):
 
   musicdir = join(common.rootdir, "recources", "sounds", "music")  #location of music files
@@ -15,6 +16,8 @@ class sounds(object):
   
   sfxnames = ["coins"]
   sfxfiles = [join(sfxdir, m+".ogg") for m in sfxnames]
+
+
 
   def __init__(self):
     pygame.mixer.init()
@@ -29,47 +32,59 @@ class sounds(object):
 
 
 
+
   #Play music
   def playmusic(self, music):
-    self.Channel_Music.set_volume((common.mastervolumefactor*common.musicvolume)/2)  #Sets the volume of the music channel
-    #TODO: put music&sfx channel volumes in game clock
+    self.setvolumes()
 
-    #Checks if song exists
-    if music not in self.musicnames:
-      return 0
-
-    #Sets song to play
-    for n in self.musicnames:
-      if music == self.musicnames[len(n)]:
-        musicsound = self.musicfiles[len(n)]
+    #Sets and plays song
+    for m in self.musicnames:
+      if music == m:
+        self.musicsound = self.musicfiles[self.musicnames.index(m)]
+        self.musicsound = pygame.mixer.Sound(self.musicsound)
+        self.Channel_Music.play(self.musicsound, loops=-1, fade_ms=10000)  #plays music infinite times, fades in over specified time in millisec
         break
 
-    musicsound = pygame.mixer.Sound(musicsound)
-    self.Channel_Music.play(musicsound, loops=-1, fade_ms=6000)  #plays on music channel, loops infinetly, fades in over specified time
-
-    return 1
-
-
-  #Stops currently playing music
-  def stopmusic(self):
-    self.Channel_Music.fadeout(4000)
 
 
   #Play sfx
   def playsfx(self, sfx):
-    pass
-    if sfx == sfx1:
-      sfxsound = join(sfxdir, "2_coins.ogg")
-    #elif sfx == ...:  #And so on...
+    self.setvolumes()
+
+    #Sets sfx to play
+    for s in self.sfxnames:
+      if sfx == s:
+        self.sfxsound = self.sfxfiles[self.sfxnames.index(s)]
+        self.sfxsound = pygame.mixer.Sound(self.sfxsound)
+        break
+
+    #Finds a free channel
+    if not self.Channel_Sfx1.get_busy():
+      self.Channel_Sfx1.play(self.sfxsound, loops=0)
+
+    elif not self.Channel_Sfx2.get_busy():
+      self.Channel_Sfx2.play(self.sfxsound, loops=0)
+
+    elif not self.Channel_Sfx3.get_busy():
+      self.Channel_Sfx3.play(self.sfxsound, loops=0)
+
+    elif not self.Channel_Sfx4.get_busy():
+      self.Channel_Sfx4.play(self.sfxsound, loops=0)
+
+    elif not self.Channel_Sfx5.get_busy():
+      self.Channel_Sfx5.play(self.sfxsound, loops=0)
+
     else:
-      return 0
+      print ("All SFX Channels Busy")
 
-    sfxsound = pygame.mixer.Sound(sfxsound)
-    sfxsound.set_volume((50)/2)  #Volume of sfx
-    sfxsound.play(loops=0)  #Play sfx once
-    sfxsound = None
 
-    return 1
 
-#Channel_Music.set_volume((common.mastervolumefactor*common.musicvolume)/2)
-#Channel_Sfx1.set_volume((common.mastervolumefactor*common.sfxvolume)/2)
+
+  def setvolumes(self):
+    self.Channel_Music.set_volume((common.mastervolume/100.00)*(common.musicvolume/100.00))
+
+    self.Channel_Sfx1.set_volume((common.mastervolume/100.00)*(common.sfxvolume/100.00))
+    self.Channel_Sfx2.set_volume((common.mastervolume/100.00)*(common.sfxvolume/100.00))
+    self.Channel_Sfx3.set_volume((common.mastervolume/100.00)*(common.sfxvolume/100.00))
+    self.Channel_Sfx4.set_volume((common.mastervolume/100.00)*(common.sfxvolume/100.00))
+    self.Channel_Sfx5.set_volume((common.mastervolume/100.00)*(common.sfxvolume/100.00))

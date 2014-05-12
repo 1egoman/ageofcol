@@ -65,6 +65,7 @@ class ai(object):
     else:
       ht=0
     # print cx, cy, hx, hy, ht
+    print "X Change:", cx, "Y Change:", cy, "X CPF:", hx, "Y CPF:", hy, "Total Dist:", ht
     if my < y: hy,hx = -hy,-hx
     if mx > x and my < y: hy,hx = hy,-hx
     if mx < x and my > y: hy,hx = hy,-hx

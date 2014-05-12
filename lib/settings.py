@@ -1,6 +1,7 @@
 import pygame
 import common
 import os
+#import sounds
 #import yaml
 
 class pausemenu(object):
@@ -12,6 +13,7 @@ class pausemenu(object):
   def __init__(self):
     self.pevent = None
     self.settings = settings()
+
 
   def render(self):
     if self.insettings:
