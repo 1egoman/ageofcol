@@ -85,7 +85,7 @@ class main(object):
 
 
     # Create the chatbox
-    common.cb = chatbox(10,10,500,20)
+    common.cb = chatbox(10,common.height-25,500,20)
     common.cb.hide = True
 
     # go to mainloop

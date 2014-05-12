@@ -6,6 +6,7 @@ from pygame.locals import *
 import economy
 from ai import unit
 import entity
+import textwrap
 import sounds
 
 global posts
@@ -15,14 +16,25 @@ common.sounds = sounds.sounds()
 
 def run(command):
 
+  system = "system"
+  player = "player"
+
   if command[0] == "/":
     words = command.split(" ")
     cmd = words[0]
     args = words[1:]
 
     if cmd == "/help" or cmd == "/?":
-      post("TODO: add some help!")
-      post("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      post(system, "TODO: add some help!")
+
+
+    elif cmd == "/debug":
+      if common.debugcommands == True:
+        common.debugcommands = False
+        post(system, "Disabling Debug Commands.")
+      elif common.debugcommands == False:
+        common.debugcommands == True
+        post(system, "WARNING: Debug Commands Enabled. Improper Command Syntax Will Result in Crashes.")
 
 
 
@@ -31,11 +43,11 @@ def run(command):
       if common.selected and common.selected.health:
 
         common.selected.health = 0
-        post("Killed "+str(common.selected))
+        post(system, "Killed "+str(common.selected))
         common.selected = None
 
       else:
-        post("Please Select a Mob First!")
+        post(system, "Please Select a Mob First!")
 
 
 
@@ -52,68 +64,111 @@ def run(command):
             amt = int(args[1])
 
           common.selected.inventory.additem(int(args[0]), amt)
-          post("Gave Item.")
+          post(system, "Gave Item.")
           common.selected = None
 
         except KeyError:
-          post("Item Doesn't Exist")
+          post(system, "Item Doesn't Exist")
 
+        except IndexError:
+          try:
+            args[0]
+          except IndexError:
+            post(system, "No Item Specified")
+
+          try:
+            args[1]
+          except IndexError:
+            post(system, "No Amount Specified")
 
 
       else:
-        post("Please Select a Mob First!")
+        post(system, "Please Select a Mob First!")
+
 
 
     elif cmd == "/pay":
-      if common.selected and common.selected.health and hasattr(common.selected, "wallet"):
-        economy.pay(common.selected.wallet, int(args[0]))
-        post("Paid.")
-        common.selected = None
+      try:
+        if common.selected and common.selected.health and hasattr(common.selected, "wallet"):
+          economy.pay(common.selected.wallet, int(args[0]))
+          post(system, "Paid.")
+          common.selected = None
 
-      else:
-        post("Please Select a Mob First!")
+        else:
+          post(system, "Please Select a Mob First!")
+
+      except IndexError:
+        post(system, "Please Specify an Amount!")
+
+
 
     elif cmd == "/spawn":
-      if args[0] == "unit":
-        unit(common.username,50,50)
+      try:
+        if args[0] == "unit":
+          unit(common.username,50,50)
+        else:
+          post(system, "Unknown Mob Type")
+
+      except IndexError:
+        post(system, "No Mob Specified")
+
+
+
+    #NOTE: debug commands in following block; improper use will cause crashes
+    elif common.debugcommands == True:
+
+      #Change username
+      if cmd == "/changeusername":
+        if args[0] != common.sysname:
+          common.username = args[0]
+        else:
+          post(system, "\"" + args[0] + "\" Cannot Be Used as Username")
+
+      #Set master/music/sfx volume until settings implemented version
+      elif cmd == "/mtvol":
+        common.mastervolume = float(args[0])
+        common.sounds.setvolumes()
+        post(system, "Master Volume: " + str(common.mastervolume))
+
+      elif cmd == "/mscvol":
+        common.musicvolume = float(args[0])
+        common.sounds.setvolumes()
+        post(system, "Music Volume: " + str(common.musicvolume))
+
+      elif cmd == "/sfxvol":
+          common.sfxvolume = float(args[0])
+          common.sounds.setvolumes()
+          post(system, "Sound Effects Volume: " + str(common.sfxvolume))
+
       else:
-        post("Unknown Mob Type")
-
-
-    elif cmd == "/changeusername":
-      common.username = args[0]
-
-
-    #Set master/music/sfx volume until settings implemented version
-    elif cmd == "/mtvol":
-      common.mastervolume = float(args[0])
-      common.sounds.setvolumes()
-      post("Master Volume: " + str(common.mastervolume))
-
-    elif cmd == "/mscvol":
-      common.musicvolume = float(args[0])
-      common.sounds.setvolumes()
-      post("Music Volume: " + str(common.musicvolume))
-
-    elif cmd == "/sfxvol":
-      common.sfxvolume = float(args[0])
-      common.sounds.setvolumes()
-      post("Sound Effects Volume: " + str(common.sfxvolume))
-
+        post(system, "Unknown Command. Run \"/help\" for Help.")
 
 
 
 
     else:
-      post("Unknown Command. Run /help for Help.")
+      post(system, "Unknown Command. Run \"/help\" for Help.")
+
 
   else:
     # Just talk
-    post("["+common.username+"] "+command)
+    post(player, command)
 
 
 
-def post(string): posts.append(string)
+def post(whosays, string):
+  if whosays == "system":
+    string = "["+common.sysname+"] " + string
+
+  elif whosays == "player":
+    string = "["+common.username+"] " + string
+
+  else:
+    string = "[UNSPECIFIED WHOSAYS]" + string
+
+  string = textwrap.wrap(string, width=common.maxpostlength)
+  for p in string:
+    posts.append(p)
 
 
 def renderPosts():
@@ -125,6 +180,7 @@ def renderPosts():
 
   for c,i in enumerate(posts[:common.maxposts]):
     r = common.g.font.render(i, True, (0,0,0))
-    common.screen.blit(r, (10, 10+c*20))
+    #common.screen.blit(r, (10, 10+c*20))
+    common.screen.blit(r, (10, common.height-45-c*20))
 
   if common.reverseposts: posts.reverse()

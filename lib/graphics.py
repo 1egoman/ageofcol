@@ -216,7 +216,7 @@ class graphics(object):
 
     # Draw Chat bar
     cmd.renderPosts()
-    common.cb.render(common.screen)
+    common.cb.render(common.screen,10,common.height-25,500,20)
 
 
 

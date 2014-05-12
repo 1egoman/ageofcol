@@ -23,11 +23,15 @@ class chatbox(object):
     self.x = x
     self.y = y
     self.w = w
-    self.h = h 
+    self.h = h
 
-  def render(self, screen):
+  def render(self, screen, x,y,w,h):
     if self.hide: return
 
+    self.x = x
+    self.y = y
+    self.w = w
+    self.h = h
 
     # Draw textbox
     pygame.draw.rect(screen, (255,255,255), (self.x,self.y,self.w,self.h))
@@ -48,22 +52,23 @@ class chatbox(object):
 
 
 
-    # Dropdown list
-    # Compute the matching items
-    if self.txt:
-      self.listmatches = difflib.get_close_matches(self.txt, self.items)
-    else:
-      self.listmatches = self.items[:8]
+    # Dropdown list; checks if this is enabled
+    if common.suggestposts:
+      # Compute the matching items
+      if self.txt:
+        self.listmatches = difflib.get_close_matches(self.txt, self.items)
+      else:
+        self.listmatches = self.items[:8]
 
 
-    # Draw bg
-    self.fullh = 5+len(self.listmatches)*20
-    pygame.draw.rect(screen, (180,180,180), (self.x, self.y+self.h, self.w, self.fullh))
+      # Draw bg
+      self.fullh = 5+len(self.listmatches)*20
+      pygame.draw.rect(screen, (180,180,180), (self.x, self.y+self.h, self.w, self.fullh))
 
-    # Draw matching items
-    for c,i in enumerate(self.listmatches):
-      r = self._font.render(i, True, (0,0,0))
-      screen.blit(r, (self.x+5, self.y+self.h+5+c*20))
+      # Draw matching items
+      for c,i in enumerate(self.listmatches):
+        r = self._font.render(i, True, (0,0,0))
+        screen.blit(r, (self.x+5, self.y+self.h+5+c*20))
 
 
 

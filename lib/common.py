@@ -11,6 +11,7 @@ version = "0.3A"
 width = 1000
 height = 800
 username = "player"
+sysname = "System"
 cursor = "arrow"
 levelname = "default"
 hiddengui = False
@@ -18,6 +19,7 @@ srclocation = ""
 pausemenu = None
 quitToLauncher = False
 
+debugcommands = True
 debug = False
 isdebugallowed = False
 debugtext = "Debug Text"
@@ -65,7 +67,9 @@ infoboxY = 0
 
 chatbar = None
 maxposts = 5
-reverseposts = False
+reverseposts = True
+maxpostlength = 50
+suggestposts = False
 
 rootdir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
