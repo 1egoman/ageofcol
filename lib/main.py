@@ -21,6 +21,48 @@ import pygame
 from pygame.locals import *
 
 
+hand_str = [
+  "     ..         ",
+  "    .xx.        ",
+  "    .xx.        ",
+  "    .xx.        ",
+  "    .xx.....    ",
+  "    .xx.xx.x..  ",
+  " .. .xx.xx.x.   ",
+  ".xx..xxxxxxxxx. ",
+  ".xxx.xxxxxxxxx. ",
+  " .xx.xx.x.x.xx. ",
+  "  .xxxx.x.x.xx. ",
+  "  .xxxx.x.x.x.  ",
+  "   .xxx.x.x.x.  ",
+  "    .xxxxxxx.   ",
+  "     .xxxx.x.   ",
+  "     ..... ..   "
+]
+
+grabber_str = [
+  "                ",
+  "                ",
+  "                ",
+  "                ",
+  "     .......    ",
+  "    .xx.xx.x..  ",
+  " .. .xx.xx.x.   ",
+  ".xx..xxxxxxxxx. ",
+  ".xxx.xxxxxxxxx. ",
+  " .xx.xx.x.x.xx. ",
+  "  .xxxx.x.x.xx. ",
+  "  .xxxx.x.x.x.  ",
+  "   .xxx.x.x.x.  ",
+  "    .xxxxxxx.   ",
+  "     .xxxx.x.   ",
+  "     ..... ..   "
+]
+
+
+
+
+
 class main(object):
 
   def onexecute(self):
@@ -58,8 +100,9 @@ class main(object):
     common.g.loadall()
     pygame.display.set_icon(civilization.buildingtextures[0])
 
-    # Set Cursor
-    common.g.setCursor(common.cursor)
+    # do cursors
+    common.hand = pygame.cursors.compile(hand_str, 'x', '.', "o")
+    common.grabber = pygame.cursors.compile(grabber_str, 'x', '.', "o")
 
     #Starts music
     common.sounds.playmusic("Into_the_Unknown")

@@ -37,8 +37,11 @@ class graphics(object):
 
 
   def render(self):
+    # fill
     common.screen.fill((100,100,100))
-    self.setCursor(common.cursor)
+
+    # cursor
+    if common.cursor: pygame.mouse.set_cursor((16, 16), (0, 0), *common.cursor)
 
     # draw the background if the cell has an ivalid type (black)
     pygame.draw.rect(common.screen, (0,0,0), (common.mapx, common.mapy, common.mapw, common.maph))

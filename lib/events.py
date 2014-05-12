@@ -210,6 +210,18 @@ class event(object):
     elif event.type == pygame.MOUSEMOTION:
       mx, my = event.pos
 
+
+      # map motion 
+      if pygame.mouse.get_pressed()[2]:
+        common.mapx += event.rel[0]
+        common.mapy += event.rel[1]
+
+        # set to grabber cursor
+        common.cursor = common.grabber
+      else:
+        # normal hand cursor
+        common.cursor = common.hand
+
       # Change tool by hovering over with mouse
       if my > common.height-(common.tilewidth+5) and common.paused != True:
 
