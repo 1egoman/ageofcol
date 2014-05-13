@@ -4,7 +4,7 @@ import os
 import pygame
 from pygame.locals import *
 import economy
-from ai import unit
+import ai
 import entity
 import textwrap
 import sounds
@@ -101,20 +101,37 @@ def run(command):
         post(system, "Please Specify an Amount!")
 
 
-
+    #TODO: add ability to specify spawn location
     elif cmd == "/spawn":
       try:
         if args[0] == "unit":
-          unit(common.username,50,50)
+          common.ai.mobins.append(ai.unit(t=common.username,x=50,y=50))
+
+        elif args[0] == "pig":
+          common.ai.mobins.append(ai.pig(x=50,y=50))
+
+        elif args[0] == "cow":
+          common.ai.mobins.append(ai.cow(x=50,y=50))
+
+        elif args[0] == "vulture":
+          common.ai.mobins.append(ai.vulture(x=50,y=50))
+
+        elif args[0] == "frog":
+          common.ai.mobins.append(ai.frog(x=50,y=50))
+
         else:
           post(system, "Unknown Mob Type")
 
+
       except IndexError:
-        post(system, "No Mob Specified")
+        try:
+          args[0]
+        except IndexError:
+          post(system, "No Mob Specified")
 
 
 
-    #NOTE: debug commands in following block; improper use will cause crashes
+    #NOTE: debug commands in following block; improper use will likely cause crashes
     elif common.debugcommands == True:
 
       #Change username

@@ -253,11 +253,17 @@ class unit(mob):
       if random.randrange(0, self.attackdist) == 1 and self.health > 0:
         # decrement the enemy's health
         mob.health -= 1
-        # If the animal died, drop xxxxxxx
+        # If the animal died, drop meat
         if mob.health == 0:
           if common.debug: print "Unit Killed a Mob."
+          #Gives unit rspective amount of meat for the mob it killed
           if mob.type == "mob" and mob.__class__.__name__ != "unit":
-            self.inventory.additem(entity.items[mob.__class__.__name__+"meat"],1)
+            if mob.__class__.__name__ == "pig": amt = pig.meatamt
+            elif mob.__class__.__name__ == "cow": amt = cow.meatamt
+            elif mob.__class__.__name__ == "vulture": amt = vulture.meatamt
+            elif mob.__class__.__name__ == "frog": amt = frog.meatamt
+            else: print "Unknown Mob Type"
+            self.inventory.additem(20,amt)
             self.wallet.amount += float(mob.maxhealth/10)
 
     # Healing
@@ -406,12 +412,14 @@ class pig(mob):
   hostile = False
   owner="everyone"
   speed = 0.1
+  meatamt = 4
 
-  def __init__(self, t, x, y):
+  def __init__(self, t="everyone", x=0, y=0):
     super(pig, self).__init__()
 
     self.x = x
     self.y = y
+    self.owner = t
 
     self.maxlength = 5
     self.prevcoords = (x,y)
@@ -460,8 +468,9 @@ class cow(mob):
   hostile = False
   owner="everyone"
   speed = 0.1
+  meatamt = 5
 
-  def __init__(self, t, x, y):
+  def __init__(self, t="everyone", x=0, y=0):
     super(cow, self).__init__()
 
     self.x = x
@@ -518,8 +527,9 @@ class vulture(mob):
   hostile = True
   owner="everyone"
   speed = 0.4
+  meatamt = 3
 
-  def __init__(self, t, x, y):
+  def __init__(self, t="everyone", x=0, y=0):
     super(vulture, self).__init__()
 
     self.x = x
@@ -578,8 +588,9 @@ class frog(mob):
   hostile = False
   owner="everyone"
   speed = 0.1
+  meatamt = 1
 
-  def __init__(self, t, x, y):
+  def __init__(self, t="everyone", x=0, y=0):
     super(frog, self).__init__()
 
     self.x = x

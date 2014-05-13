@@ -14,21 +14,26 @@ import common
 
 #   for x in entity.items.items(): entity.itemsbyid = dict(entity.itemsbyid.items() + [(x[1], x[0])])
 
-
+#TODO: sort items and item info
+#TODO: update textures to show change to using only one meat item
 
 class entity(object):
   entitys = []
   items = {
-  'pigmeat': 20, 
-  'cowmeat': 21, 
+  #'pigmeat': 20,
+  #'cowmeat': 21, 
+  'meat': 20,
+
   'jellybeanseed': 22, 
   'potatoseed': 23, 
   'watermelonseed': 24, 
   'wheatseed': 25, 
+
   'waterbucket': 19, 
   'rawwood': 12, 
   'refinedwood': 15, 
   'sapling': 10, 
+
   'stone': 30, 
   'coal': 31, 
   'ironore': 32, 
@@ -44,8 +49,9 @@ class entity(object):
 
   w = common.entitywidth
   itemslocation = {
-  'pigmeat': (0,w*3), 
-  'cowmeat': (w,w*3),
+  #'pigmeat': (0,w*3), 
+  #'cowmeat': (w,w*3),
+  'meat': (0,w*3),
 
   'jellybeanseed': (w*2,w*3), 
   'potatoseed': (w*3,w*3), 
@@ -67,8 +73,9 @@ class entity(object):
   }
 
   itemstype = {
-  'pigmeat': 'food', 
-  'cowmeat': 'food', 
+  #'pigmeat': 'food', 
+  #'cowmeat': 'food', 
+  'meat': 'food',
 
   'jellybeanseed': 'food', 
   'potatoseed': 'food', 
@@ -90,8 +97,9 @@ class entity(object):
   }
 
   displayname = {
-  20: 'Pork', 
-  21: 'Steak', 
+  #20: 'Pork', 
+  #21: 'Steak', 
+  20: 'Meat',
 
   22: 'Jelly Bean Seed',
   23: 'Potato Seed',
@@ -114,7 +122,7 @@ class entity(object):
 
   stacksize = {
   20: 16, 
-  21: 16, 
+  #21: 16, 
   22: 16,
   23: 16,
   24: 16,
