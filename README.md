@@ -11,3 +11,6 @@ Age of Colonization is a game started by 1egoman and is now maintained and devel
 ###What kind of game is Age of Colonization?###
 Age of Colonization is still in very early development, so the overall picture of the game is not yet clear. 
 The final game, for comparison, will probably be something like a combination of Age of Empires and Minecraft.
+
+###What is this branch for?###
+This branch is for some experimental things that I want to mss about with. It will be mostly rewritten and overall different.
