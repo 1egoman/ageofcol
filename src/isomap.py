@@ -5,6 +5,10 @@ from math import *
 import os
 import json
 
+from entity import Entity, loadEntitesFromMap
+from dialogSpawner import checkToSpawnDialog, drawDialog
+
+
 
 """ Basically, a class that handes all the map related stuff and the math behind it all """
 class isoMap(object):
@@ -13,7 +17,7 @@ class isoMap(object):
   def __init__(self, surface, mapWidth, mapHeight, tileWidth=128, tileHeight=64):
 
     # surface
-    self._s = surface
+    self.s = surface
 
     # generate map
     self.mapWidth = mapWidth
@@ -38,11 +42,13 @@ class isoMap(object):
     self.mapAuthor = "Anonymous"
     self.mapDesc = "A new map"
 
-    # selection
-    self.selection = None
+    # entity list
+    self.entityList = []
 
     # other
     self.renderBorders = 0
+    self.selection = None
+    self.selectedItems = []
 
 
   # loads all resources for game to work
@@ -55,6 +61,16 @@ class isoMap(object):
       self.mapResources["tiles"][name] = pygame.image.load( os.path.join(tile, f) ).convert_alpha()
 
 
+  # draw everything on the map
+  def drawAll(self):
+
+    # draw map, and entitys
+    self.drawMap()
+    self.drawEntities()
+
+    # then, draw any dialogs
+    checkToSpawnDialog(self)
+    drawDialog()
 
   # draws the map to the screen
   def drawMap(self):
@@ -77,22 +93,21 @@ class isoMap(object):
         Ty = Cy + self.offsetY - tileSurface.get_height() + self.tileHeight + self.tileHeight/4
 
         # draw the tile
-        self._s.blit(tileSurface, (Tx, Ty))
+        self.s.blit(tileSurface, (Tx, Ty))
 
 
         # render borders
         if self.renderBorders:
 
           # create the iso tile shape
-          tilePoints = [
-            (self.offsetX + Cx+self.tileWidth/2, self.offsetY + Cy),
-            (self.offsetX + Cx+self.tileWidth,   self.offsetY + Cy+self.tileHeight/2),
-            (self.offsetX + Cx+self.tileWidth/2, self.offsetY + Cy+self.tileHeight),
-            (self.offsetX + Cx,                  self.offsetY + Cy+self.tileHeight/2)
-          ]
+          tilePoints = self.getIsometricShape(Cx, Cy)
 
           # draw the border
-          pygame.draw.polygon(self._s, (0, 0, 0), tilePoints, 1)
+          pygame.draw.polygon(self.s, (0, 0, 0), tilePoints, 1)
+
+
+
+
 
 
     # draw selection area
@@ -119,6 +134,9 @@ class isoMap(object):
 
 
 
+
+
+
       # loop through tiles
       for i in iterX:
         for j in iterY:
@@ -127,15 +145,20 @@ class isoMap(object):
           Cx, Cy = self.IsoToScreen( self.selection[0] + i, self.selection[1] + j )
 
           # create the iso tile shape
-          tilePoints = [
-            (self.offsetX + Cx+self.tileWidth/2, self.offsetY + Cy),
-            (self.offsetX + Cx+self.tileWidth,   self.offsetY + Cy+self.tileHeight/2),
-            (self.offsetX + Cx+self.tileWidth/2, self.offsetY + Cy+self.tileHeight),
-            (self.offsetX + Cx,                  self.offsetY + Cy+self.tileHeight/2)
-          ]
+          tilePoints = self.getIsometricShape(Cx, Cy)
 
           # draw the border
-          pygame.draw.polygon(self._s, (10, 158, 191), tilePoints, 4)
+          pygame.draw.polygon(self.s, (10, 158, 191), tilePoints, 4)
+
+
+  # draws all entities to the screen
+  def drawEntities(self):
+
+    # iterate through
+    for e in self.entityList:
+      # if e is of type Entity or is a sibling of Entity
+      if e.__class__ == Entity or Entity in e.__class__.__bases__:
+        e.draw()
 
 
   # converts isometric coords into 2d screen coordinates
@@ -151,6 +174,33 @@ class isoMap(object):
     tx = (y - x/2)/self.tileHeight
     ty = (y + x/2)/self.tileHeight
     return -floor(tx), floor(ty)
+
+
+  # gets the general isometric tile shape
+  def getIsometricShape(self, Cx, Cy, offset=True):
+    # create the iso tile shape
+    if offset:
+      tilePoints = [
+        (self.offsetX + Cx+self.tileWidth/2, self.offsetY + Cy),
+        (self.offsetX + Cx+self.tileWidth,   self.offsetY + Cy+self.tileHeight/2),
+        (self.offsetX + Cx+self.tileWidth/2, self.offsetY + Cy+self.tileHeight),
+        (self.offsetX + Cx,                  self.offsetY + Cy+self.tileHeight/2)
+      ]
+    else:
+      tilePoints = [
+        (Cx+self.tileWidth/2, Cy),
+        (Cx+self.tileWidth,   Cy+self.tileHeight/2),
+        (Cx+self.tileWidth/2, Cy+self.tileHeight),
+        (Cx,                  Cy+self.tileHeight/2)
+      ]
+    return tilePoints
+
+
+  # gets the place to blit an iso shape so it will align with the tile grid
+  def getIsometricImagePosition(self, Cx, Cy):
+    Tx = Cx + self.offsetX
+    Ty = Cy + self.offsetY + self.tileHeight
+    return Tx, Ty
 
 
   # loads a map from a map folder
@@ -186,3 +236,7 @@ class isoMap(object):
         self.mapWidth = len(tileStuffs["tiles"])
         self.mapHeight = len(tileStuffs["tiles"][0])
         self._tiles = tileStuffs["tiles"]
+
+      # also, load entities
+      if tileStuffs.has_key("entitys"):
+        loadEntitesFromMap(self, tileStuffs["entitys"])

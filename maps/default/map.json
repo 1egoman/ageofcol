@@ -80,5 +80,32 @@
       {"name": "tree", "biome": "grassy"},
       {"name": "tree", "biome": "grassy"}
     ]
+  ],
+  "entitys": [
+    {
+      "type": "Village",
+      "eWidth": 3, 
+      "health": 0.5, 
+      "eX": 0, 
+      "eHeight": 3, 
+      "owner": ["Player"], 
+      "eY": 1, 
+      "buildingList": [
+        {
+          "bY": 1, 
+          "faceDirection": 0, 
+          "bX": 1.5
+        }, {
+          "bY": 0, 
+          "faceDirection": 0, 
+          "bX": 0
+        }, {
+          "bY": 2, 
+          "faceDirection": 1, 
+          "bX": 2
+        }
+      ], 
+      "population": 50
+    }
   ]
 }
