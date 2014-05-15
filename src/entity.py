@@ -28,7 +28,15 @@ def loadEntitesFromMap(iso, ent):
 
       # unpack all buildings
       for t in cpy:
-        b = g.Building(g, 0, 0, 0)
+
+        # get structure type
+        if t.has_key("type"):
+          exec "tType = g.%s" % t["type"]
+        else:
+          tType = g.Building
+
+        # create it
+        b = tType(g, 0, 0, 0)
         b.__dict__.update( t )
         g.buildingList.append(b)
 
@@ -71,6 +79,7 @@ class Entity(object):
 
     # draw tile
     pygame.draw.polygon(self.isoMap.s, (255, 0, 0), tilePoints)
+
 
 
 
@@ -128,6 +137,29 @@ class Village(Entity):
         self.parentVillage.isoMap.s.blit(self.buildingSurfaceWest, (Px, Py))
       else:
         self.parentVillage.isoMap.s.blit(self.buildingSurfaceEast, (Px, Py))
+
+
+
+
+  """ This class represents a 'campfire' """
+  class Fire(Building):
+
+    # load fire's image
+    def loadImage(self, location="res"):
+      path = os.path.join( os.path.abspath(location), "entitys", "fire.png" )
+      self.Fire = pygame.image.load(path).convert_alpha()
+
+    def draw(self):
+      # get positions
+      Sx, Sy = self.parentVillage.isoMap.IsoToScreen(self.parentVillage.eX + self.bX, self.parentVillage.eY + self.bY)
+      Px, Py = self.parentVillage.isoMap.getIsometricImagePosition(Sx, Sy)
+      Py -= 16 + self.Fire.get_height()
+
+      # draw it
+      self.parentVillage.isoMap.s.blit(self.Fire, (Px, Py))
+
+
+
 
 
 

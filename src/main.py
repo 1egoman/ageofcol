@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 import isomap, entity
-
+from minimap import Minimap
 
 class Game(object):
 
@@ -64,8 +64,11 @@ class Game(object):
     # create the map
     self.iso = isomap.isoMap(self.s, 8, 8)
 
-    # load stuff
+    # load in a mao
     self.iso.loadMap("maps/default")
+
+    # create the minimap
+    self.miniMap = Minimap(self.iso, -8, -8)
 
 
 
@@ -85,6 +88,8 @@ class Game(object):
     # the loop
     while running:
 
+      # set variables
+      doSelection = 1
 
       # events
       for event in pygame.event.get():
@@ -96,17 +101,21 @@ class Game(object):
         elif event.type == VIDEORESIZE:
           s = pygame.display.set_mode(event.size, RESIZABLE)
 
-        # move mouse
+        # general mouse move while clicking (left button)
         elif event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[2]:
           self.iso.offsetX += event.rel[0]
           self.iso.offsetY += event.rel[1]
           self.currentCursor = self.cursorGrabber
+
+        # general mouse move while clicking (left button)
+        elif event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0]:
+          if self.miniMap.dragOnMap( event ): doSelection = 0
         else:
           self.currentCursor = self.cursorHand
 
 
         # test for selection
-        self.selectionHandler(event)
+        if doSelection: self.selectionHandler(event)
 
 
 
@@ -118,6 +127,9 @@ class Game(object):
 
       # draw map
       self.iso.drawAll()
+
+      # draw minimap
+      self.miniMap.draw()
 
       # tick clock and flip buffers
       clock.tick()
@@ -139,7 +151,7 @@ class Game(object):
       self.iso.selection[2] = int( tx - self.iso.selection[0] )
       self.iso.selection[3] = int( ty - self.iso.selection[1] )
 
-
+      # see if any entities inside TODO LATER
 
     # selection code
     elif event.type == pygame.MOUSEBUTTONDOWN and not pygame.mouse.get_pressed()[2]:

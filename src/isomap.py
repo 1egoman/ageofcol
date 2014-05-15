@@ -23,7 +23,6 @@ class isoMap(object):
     self.mapWidth = mapWidth
     self.mapHeight = mapHeight
     self._tiles = [   [ {"name": "grass"} for _ in xrange(0, mapHeight) ] for _ in xrange(0, mapWidth)   ]
-    self._tiles[0][0]["name"] = "water"
 
     # tile size
     self.tileWidth = tileWidth

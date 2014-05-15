@@ -84,7 +84,7 @@ class SelectionDialog(Dialog):
     self.Heart.blit(self.Image, (0, 0), (self.DLG_WIDTH, 0, 48, 48))
 
     # fonts
-    self.titleFont = pygame.font.SysFont(pygame.font.get_default_font(), 48)
+    self.titleFont = pygame.font.SysFont(pygame.font.get_default_font(), 36)
     self.font = pygame.font.SysFont(pygame.font.get_default_font(), 18)
 
 
@@ -97,10 +97,15 @@ class SelectionDialog(Dialog):
       # draw dialog
       self.isoMap.s.blit(self.Image, (self.dX, self.dY), (0, 0, self.DLG_WIDTH, self.DLG_HEIGHT))
 
-      # render title (upper left)
-      selectedType = selectedItem.__class__.__name__
-      title = self.titleFont.render(selectedType, 1, (255, 255, 255))
-      self.isoMap.s.blit(title, (self.dX+8, self.dY+4))
+      # get entities name
+      if hasattr(selectedItem, "name"):
+        selectedName = selectedItem.name
+      else:
+        selectedName = selectedItem.__class__.__name__
+
+      # render name (upper left)
+      title = self.titleFont.render(selectedName, 1, (255, 255, 255))
+      self.isoMap.s.blit(title, (self.dX+8, self.dY+12))
 
       # render health (as hearts in upper right)
       selectedHealth = selectedItem.health
