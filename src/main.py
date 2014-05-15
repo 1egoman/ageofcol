@@ -159,6 +159,7 @@ class Game(object):
       # get clicked tile
       mx, my = event.pos
       tx, ty = self.iso.screenToIso(mx-self.iso.offsetX, my-self.iso.offsetY)
+      fx, fy = self.iso.screenToIso(mx-self.iso.offsetX, my-self.iso.offsetY, asfloat=1)
 
 
       # first, see if the user clicked on an entity
@@ -166,12 +167,22 @@ class Game(object):
       for e in self.iso.entityList:
         if tx >= e.eX and ty >= e.eY and tx < e.eX + e.eWidth and ty < e.eY + e.eHeight:
           clickEntity = e
+
+        # check for entitys inside
+          if hasattr(clickEntity, "entityList"):
+
+            for f in e.entityList:
+              if tx >= e.eX + f.eX and ty >= e.eY + f.eY and fx < e.eX + f.eX + f.eWidth and fy < e.eY + f.eY + f.eHeight:
+                clickEntity = f
+                break
+
+
           break
 
 
       # user clicked on an entity
       if clickEntity:
-        self.iso.selection = [e.eX, e.eY, e.eWidth, e.eHeight]
+        self.iso.selection = [int(clickEntity.eX), int(clickEntity.eY), int(clickEntity.eWidth), int(clickEntity.eHeight)]
         self.iso.selectedItems = [ clickEntity ]
 
       # start a normal selection

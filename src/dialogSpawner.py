@@ -26,9 +26,9 @@ def checkToSpawnDialog(isoMap):
 
 
   if activeDialog:
-    activeDialog.oX = isoMap.selection[0]#
-    activeDialog.oY = isoMap.selection[1]# + isoMap.offsetY
-    activeDialog.computeLocation()
+    activeDialog.dX = 8#isoMap.selection[0]#
+    activeDialog.dY = 8#isoMap.selection[1]# + isoMap.offsetY
+    # activeDialog.computeLocation()
 
 
 

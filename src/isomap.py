@@ -168,11 +168,15 @@ class isoMap(object):
 
 
   # converts 2d screen coords into isometric coordinates
-  def screenToIso(self, x, y):
+  def screenToIso(self, x, y, asfloat=0):
     x, y = x*1.0-self.tileHeight/2, y*1.0
     tx = (y - x/2)/self.tileHeight
     ty = (y + x/2)/self.tileHeight
-    return -floor(tx), floor(ty)
+
+    if not asfloat:
+      return -floor(tx), floor(ty)
+    else:
+      return -tx, ty
 
 
   # gets the general isometric tile shape

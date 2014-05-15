@@ -49,7 +49,7 @@ def loadEntitesFromMap(iso, ent):
 class Entity(object):
 
   # initialize
-  def __init__(self, imap, x, y, w=1, h=1):
+  def __init__(self, imap, x=0, y=0, w=1, h=1):
 
     # map the entity is part of
     self.isoMap = imap
@@ -68,7 +68,6 @@ class Entity(object):
 
 
 
-
   # render the entity
   def draw(self):
 
@@ -84,8 +83,43 @@ class Entity(object):
 
 
 
+""" A humanoid person """
+class Man(Entity):
+
+  MAN_POS = [(0, 0, 16, 32), (16, 0, 32, 32), (32, 0, 48, 32), (48, 0, 96, 32)]
+
+  def __init__(self, *args):
+    super(Man, self).__init__(*args)
+    self.parentEntity = None
+
+    # set the width and height
+    self.eWidth = 0.6
+    self.eHeight = 0.128
+
+    # laod the images
+    self.loadImage()
+
+  # load the man's images
+  def loadImage(self, location="res"):
+    path = os.path.join( os.path.abspath(location), "entitys", "man.png" )
+    self.ManEast = pygame.image.load(path).convert_alpha()
 
 
+  def draw(self):
+    # get coords
+    Tx, Ty = self.isoMap.IsoToScreen(self.eX, self.eY)
+    Sx, Sy = self.isoMap.getIsometricImagePosition( Tx, Ty )
+    Sy -= 32 + self.ManEast.get_height()
+
+    # make sure we should draw it
+    if self.eX == 0 and self.eY == 0: return
+
+    # draw it
+    if self.parentEntity:
+      Px, Py = self.isoMap.IsoToScreen(self.parentEntity.eX, self.parentEntity.eY)
+      self.isoMap.s.blit(self.ManEast, (Px + Sx, Py + Sy), self.MAN_POS[0])
+    else:
+      self.isoMap.s.blit(self.ManEast, (Sx, Sy), self.MAN_POS[0])
 
 
 
@@ -162,7 +196,6 @@ class Village(Entity):
 
 
 
-
   # initialize
   def __init__(self, *args):
     super(Village, self).__init__(*args)
@@ -170,6 +203,9 @@ class Village(Entity):
     # list of buildings within the village
     self.buildingList = []
 
+    # entities within village
+    self.entityList = [ Man(self.isoMap, 2, 2) ]
+    self.entityList[-1].parentEntity = self
 
     # create a shaded tile surface
     self.shadedTile = pygame.Surface((self.isoMap.tileWidth, self.isoMap.tileHeight), SRCALPHA)
@@ -180,9 +216,6 @@ class Village(Entity):
 
     # village population
     self.population = 0
-
-    # load sample village
-    # self.populateVillage()
 
 
 
@@ -201,10 +234,14 @@ class Village(Entity):
         self.isoMap.s.blit(self.shadedTile, (Px, Py))
 
 
+
     # draw all buildings within village
     for b in self.buildingList:
       b.draw()
 
+    # draw all entities within village
+    for e in self.entityList:
+      e.draw()
 
   # sample function to draw buildings in village
   def populateVillage(self):
@@ -244,4 +281,4 @@ class Village(Entity):
     del d["shadedTile"]
 
     # return it
-    return d
+    return 
