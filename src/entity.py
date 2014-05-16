@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from math import *
 import os
+import random
 
 # constants
 FACE_EAST = 0
@@ -96,6 +97,20 @@ class Man(Entity):
     self.eWidth = 0.6
     self.eHeight = 0.128
 
+    # starting point
+    self.startX = 0
+    self.startY = 0
+
+    # destination
+    self.destX = 0
+    self.destY = 0
+
+    # percent along the path to the destination
+    self.percentToDest = 0
+
+    # movement speed
+    self.Speed = 0.001
+
     # laod the images
     self.loadImage()
 
@@ -106,6 +121,9 @@ class Man(Entity):
 
 
   def draw(self):
+
+    self.animateFrame()
+
     # get coords
     Tx, Ty = self.isoMap.IsoToScreen(self.eX, self.eY)
     Sx, Sy = self.isoMap.getIsometricImagePosition( Tx, Ty )
@@ -122,6 +140,52 @@ class Man(Entity):
       self.isoMap.s.blit(self.ManEast, (Sx, Sy), self.MAN_POS[0])
 
 
+  # move man for the frame
+  def animateFrame(self):
+
+    # pathfind in a village
+    if self.parentEntity:
+
+      # get coordinates
+      Ex, Ey = self.isoMap.IsoToScreen(self.eX, self.eY)
+      Px, Py = self.isoMap.IsoToScreen(self.parentEntity.eX, self.parentEntity.eY)
+
+      # see if we have a planned destination
+      if not self.destX and not self.destY:
+
+        # pick a destination
+        self.destX = random.randint(0, self.parentEntity.eWidth) - self.eX
+        self.destY = random.randint(0, self.parentEntity.eHeight) - self.eY
+        print self.destX, self.destY
+
+        # set start point
+        self.startX = self.eX
+        self.startY = self.eY
+
+        self.percentToDest = 0
+
+      else:
+        # do a movement frame
+
+        self.percentToDest += self.Speed
+
+        Tx = self.destX
+        Ty = self.destY
+
+        angle = atan2(Ty, Tx)
+
+        dist = sqrt(Tx**2 + Ty**2)
+
+        self.eX += cos(angle) * self.Speed
+        self.eY += sin(angle) * self.Speed
+
+        # end it
+        if self.percentToDest >= dist:
+          self.destX, self.destY = 0, 0
+
+    else:
+      # pathfind outside of a village
+      return
 
 
 
