@@ -164,8 +164,16 @@ class Game(object):
 
       # first, see if the user clicked on an entity
       clickEntity = None
-      for e in self.iso.entityList:
-        if tx >= e.eX and ty >= e.eY and tx < e.eX + e.eWidth and ty < e.eY + e.eHeight:
+      for e in sorted(self.iso.entityList, key=lambda x: x.sortOrder, reverse=True):
+        # check for parent
+        if hasattr(e, "parentEntity") and e.parentEntity:
+          entX = e.eX + e.parentEntity.eX
+          entY = e.eY + e.parentEntity.eY
+        else:
+          entX = e.eX
+          entY = e.eY
+
+        if tx >= entX and ty >= entY and tx < entX + e.eWidth and ty < entY + e.eHeight:
           clickEntity = e
 
         # check for entitys inside

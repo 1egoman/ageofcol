@@ -67,6 +67,9 @@ class Entity(object):
     # owners
     self.owner = ["Player"]
 
+    # selection sort order
+    self.sortOrder = 0
+
 
 
   # render the entity
@@ -113,6 +116,9 @@ class Man(Entity):
 
     # laod the images
     self.loadImage()
+
+    # sort order
+    self.sortOrder = 100;
 
   # load the man's images
   def loadImage(self, location="res"):
@@ -280,6 +286,9 @@ class Village(Entity):
 
     # village population
     self.population = 0
+
+    # sort order
+    self.sortOrder = 10;
 
 
 
