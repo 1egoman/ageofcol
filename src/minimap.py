@@ -9,8 +9,8 @@ class Minimap(object):
     self.isoMap = isoMap
     self.averageTile = {}
 
-    self.tileWidth = 16
-    self.tileHeight = 8
+    self.tileWidth = 32
+    self.tileHeight = 16
 
     # create tile averages
     self.createTileColors()
