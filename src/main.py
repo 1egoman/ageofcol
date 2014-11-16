@@ -47,7 +47,7 @@ class Game(object):
   ]
 
 
-  def __init__(self): 
+  def __init__(self):
     # init pygame
     pygame.init()
 
@@ -60,7 +60,7 @@ class Game(object):
     self.currentCursor = self.cursorHand
 
 
-  
+
     # create the map
     self.iso = isomap.isoMap(self.s, 8, 8)
 
@@ -154,7 +154,7 @@ class Game(object):
       # see if any entities inside TODO LATER
 
     # selection code
-    elif event.type == pygame.MOUSEBUTTONDOWN and not pygame.mouse.get_pressed()[2]:
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:#not pygame.mouse.get_pressed()[2]:
 
       # get clicked tile
       mx, my = event.pos

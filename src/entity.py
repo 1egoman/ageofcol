@@ -15,7 +15,7 @@ def loadEntitesFromMap(iso, ent):
 
     # get entity type
     exec "eType = %s" % e["type"]
-    
+
 
     # create a new instance
     g = eType( iso, 0, 0, 0 )
@@ -156,7 +156,7 @@ class Man(Entity):
         # pick a destination
         self.destX = random.randint(0, self.parentEntity.eWidth) - self.eX
         self.destY = random.randint(0, self.parentEntity.eHeight) - self.eY
-        print self.destX, self.destY
+        # print self.destX, self.destY
 
         # set start point
         self.startX = self.eX
@@ -289,7 +289,7 @@ class Village(Entity):
     # draw shaded background
     for i in xrange(0, self.eWidth):
       for j in xrange(0, self.eHeight):
-        
+
         # get positions
         Sx, Sy = self.isoMap.IsoToScreen(self.eX + i + 1, self.eY + j - 1)
         Px, Py = self.isoMap.getIsometricImagePosition(Sx, Sy)
@@ -312,8 +312,8 @@ class Village(Entity):
 
     # positions of all the buildings
     buildingPositions = [
-    (1.5, 1, FACE_EAST), 
-    (0, 0, FACE_EAST), 
+    (1.5, 1, FACE_EAST),
+    (0, 0, FACE_EAST),
     (2, 2, FACE_WEST)
     ]
 
@@ -345,4 +345,4 @@ class Village(Entity):
     del d["shadedTile"]
 
     # return it
-    return 
+    return
