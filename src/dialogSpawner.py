@@ -33,9 +33,9 @@ def checkToSpawnDialog(isoMap):
 
 
 # draw the active dialog, if there is one
-def drawDialog():
+def drawDialog(screen):
   if activeDialog:
-    activeDialog.draw()
+    activeDialog.draw(screen)
     return 1
   else:
     return 0
@@ -59,9 +59,10 @@ class Dialog(object):
     self.dX = oX + self.isoMap.offsetX
     self.dY = oY + self.isoMap.offsetY + self.isoMap.tileHeight/2
 
-  def draw(self):
+  def draw(self, screen):
     # draw dialog
-    pygame.draw.rect(self.isoMap.s, (255, 0, 0), (self.dX, self.dY, 200, 100))
+    # pygame.draw.rect(self.isoMap.s, (255, 0, 0), (self.dX, self.dY, 200, 100))
+    pygame.draw.rect(screen, (255, 0, 0), (self.dX, self.dY, 200, 100))
 
 
 
@@ -88,14 +89,14 @@ class SelectionDialog(Dialog):
     self.font = pygame.font.SysFont(pygame.font.get_default_font(), 18)
 
 
-  def draw(self):
+  def draw(self, screen):
 
     # render the dialog only if some object is selected
     if self.isoMap.selectedItems:
       selectedItem = self.isoMap.selectedItems[0]
 
       # draw dialog
-      self.isoMap.s.blit(self.Image, (self.dX, self.dY), (0, 0, self.DLG_WIDTH, self.DLG_HEIGHT))
+      screen.blit(self.Image, (self.dX, self.dY), (0, 0, self.DLG_WIDTH, self.DLG_HEIGHT))
 
       # get entities name
       if hasattr(selectedItem, "name"):
@@ -105,13 +106,13 @@ class SelectionDialog(Dialog):
 
       # render name (upper left)
       title = self.titleFont.render(selectedName, 1, (255, 255, 255))
-      self.isoMap.s.blit(title, (self.dX+8, self.dY+12))
+      screen.blit(title, (self.dX+8, self.dY+12))
 
       # render health (as hearts in upper right)
       selectedHealth = selectedItem.health
       for h in xrange( 0, int(selectedHealth*4) ):  # 4 = 4 hearts total
         hX = self.dX + self.DLG_WIDTH/2 + h*self.Heart.get_width()
-        self.isoMap.s.blit(self.Heart, (hX, self.dY))
+        screen.blit(self.Heart, (hX, self.dY))
 
       # get some other stats
       toOutput = []
@@ -140,4 +141,4 @@ class SelectionDialog(Dialog):
         Ly = self.dY + 48 + 8 + c*rndr.get_height()
 
         # draw it
-        self.isoMap.s.blit(rndr, (Lx, Ly))
+        screen.blit(rndr, (Lx, Ly))

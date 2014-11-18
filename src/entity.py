@@ -73,7 +73,7 @@ class Entity(object):
 
 
   # render the entity
-  def draw(self):
+  def draw(self, screen):
 
     # get tile position
     # tilePoints = self.isoMap.getIsometricShape( (self.eX)*self.isoMap.tileWidth, (self.eY-1)*self.isoMap.tileHeight )\
@@ -81,7 +81,8 @@ class Entity(object):
     tilePoints = self.isoMap.getIsometricShape( Tx, Ty )
 
     # draw tile
-    pygame.draw.polygon(self.isoMap.s, (255, 0, 0), tilePoints)
+    # pygame.draw.polygon(self.isoMap.s, (255, 0, 0), tilePoints)
+    pygame.draw.polygon(screen, (255, 0, 0), tilePoints)
 
 
 
@@ -126,7 +127,7 @@ class Man(Entity):
     self.ManEast = pygame.image.load(path).convert_alpha()
 
 
-  def draw(self):
+  def draw(self, screen):
 
     self.animateFrame()
 
@@ -141,9 +142,11 @@ class Man(Entity):
     # draw it
     if self.parentEntity:
       Px, Py = self.isoMap.IsoToScreen(self.parentEntity.eX, self.parentEntity.eY)
-      self.isoMap.s.blit(self.ManEast, (Px + Sx, Py + Sy), self.MAN_POS[0])
+      # self.isoMap.s.blit(self.ManEast, (Px + Sx, Py + Sy), self.MAN_POS[0])
+      screen.blit(self.ManEast, (Px + Sx, Py + Sy), self.MAN_POS[0])
     else:
-      self.isoMap.s.blit(self.ManEast, (Sx, Sy), self.MAN_POS[0])
+      # self.isoMap.s.blit(self.ManEast, (Sx, Sy), self.MAN_POS[0])
+      screen.blit(self.ManEast, (Sx, Sy), self.MAN_POS[0])
 
 
   # move man for the frame
@@ -230,7 +233,7 @@ class Village(Entity):
 
 
 
-    def draw(self):
+    def draw(self, screen):
       # parse building position
       Sx, Sy = self.parentVillage.isoMap.IsoToScreen(self.parentVillage.eX + self.bX, self.parentVillage.eY + self.bY)
       Px, Py = self.parentVillage.isoMap.getIsometricImagePosition(Sx, Sy)
@@ -238,9 +241,11 @@ class Village(Entity):
 
       # draw it
       if self.faceDirection == FACE_WEST:
-        self.parentVillage.isoMap.s.blit(self.buildingSurfaceWest, (Px, Py))
+        # self.parentVillage.isoMap.s.blit(self.buildingSurfaceWest, (Px, Py))
+        screen.blit(self.buildingSurfaceWest, (Px, Py))
       else:
-        self.parentVillage.isoMap.s.blit(self.buildingSurfaceEast, (Px, Py))
+        # self.parentVillage.isoMap.s.blit(self.buildingSurfaceEast, (Px, Py))
+        screen.blit(self.buildingSurfaceEast, (Px, Py))
 
 
 
@@ -253,14 +258,15 @@ class Village(Entity):
       path = os.path.join( os.path.abspath(location), "entitys", "fire.png" )
       self.Fire = pygame.image.load(path).convert_alpha()
 
-    def draw(self):
+    def draw(self, screen):
       # get positions
       Sx, Sy = self.parentVillage.isoMap.IsoToScreen(self.parentVillage.eX + self.bX, self.parentVillage.eY + self.bY)
       Px, Py = self.parentVillage.isoMap.getIsometricImagePosition(Sx, Sy)
       Py -= 16 + self.Fire.get_height()
 
       # draw it
-      self.parentVillage.isoMap.s.blit(self.Fire, (Px, Py))
+      # self.parentVillage.isoMap.s.blit(self.Fire, (Px, Py))
+      screen.blit(self.Fire, (Px, Py))
 
 
 
@@ -293,7 +299,7 @@ class Village(Entity):
 
 
   # draw it
-  def draw(self):
+  def draw(self, screen):
 
     # draw shaded background
     for i in xrange(0, self.eWidth):
@@ -304,17 +310,20 @@ class Village(Entity):
         Px, Py = self.isoMap.getIsometricImagePosition(Sx, Sy)
 
         # draw it
-        self.isoMap.s.blit(self.shadedTile, (Px, Py))
+        # self.isoMap.s.blit(self.shadedTile, (Px, Py))
+        screen.blit(self.shadedTile, (Px, Py))
 
 
 
     # draw all buildings within village
     for b in self.buildingList:
-      b.draw()
+      # b.draw()
+      b.draw(screen)
 
     # draw all entities within village
     for e in self.entityList:
-      e.draw()
+      # e.draw()
+      e.draw(screen)
 
   # sample function to draw buildings in village
   def populateVillage(self):

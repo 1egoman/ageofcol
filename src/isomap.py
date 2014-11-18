@@ -14,11 +14,7 @@ from dialogSpawner import checkToSpawnDialog, drawDialog
 class isoMap(object):
 
 
-  def __init__(self, surface, mapWidth, mapHeight, tileWidth=128, tileHeight=64):
-
-    # surface
-    self.s = surface
-
+  def __init__(self, mapWidth, mapHeight, tileWidth=128, tileHeight=64):
     # generate map
     self.mapWidth = mapWidth
     self.mapHeight = mapHeight
@@ -58,106 +54,6 @@ class isoMap(object):
     for f in os.listdir(tile):
       name = f.split('.')[0]
       self.mapResources["tiles"][name] = pygame.image.load( os.path.join(tile, f) ).convert_alpha()
-
-
-  # draw everything on the map
-  def drawAll(self):
-
-    # draw map, and entitys
-    self.drawMap()
-    self.drawEntities()
-
-    # then, draw any dialogs
-    checkToSpawnDialog(self)
-    drawDialog()
-
-  # draws the map to the screen
-  def drawMap(self):
-
-    # loop through each tile
-    for i in xrange(self.mapWidth-1, -1, -1):
-      for j in xrange(0, self.mapHeight):
-
-        # get tile position
-        Cx, Cy = self.IsoToScreen(i, j)
-
-
-
-        # get tile name, and respective surface
-        tileName = self._tiles[i][j]["name"]
-        tileSurface = self.mapResources["tiles"][tileName]
-
-        # get surface's position
-        Tx = Cx + self.offsetX
-        Ty = Cy + self.offsetY - tileSurface.get_height() + self.tileHeight + self.tileHeight/4
-
-        # draw the tile
-        self.s.blit(tileSurface, (Tx, Ty))
-
-
-        # render borders
-        if self.renderBorders:
-
-          # create the iso tile shape
-          tilePoints = self.getIsometricShape(Cx, Cy)
-
-          # draw the border
-          pygame.draw.polygon(self.s, (0, 0, 0), tilePoints, 1)
-
-
-
-
-
-
-    # draw selection area
-    if self.selection:
-
-      # make sure that the selection can never reach zero in size
-      if self.selection[2] == 0: self.selection[2] = 1
-      if self.selection[3] == 0: self.selection[3] = 1
-
-      # this calculates the correct iterator to use in the for loop
-      # depending on if the size of the x selection is positive or negitive
-      if self.selection[2] > 0:
-        iterX = xrange(self.selection[2]-1, -1, -1)
-      else:
-        iterX = xrange(self.selection[2]-1, 1, 1)
-
-
-      # this calculates the correct iterator to use in the for loop
-      # depending on if the size of the y selection is positive or negitive
-      if self.selection[3] > 0:
-        iterY = xrange(0, self.selection[3], 1)
-      else:
-        iterY = xrange(0, self.selection[3], -1)
-
-
-
-
-
-
-      # loop through tiles
-      for i in iterX:
-        for j in iterY:
-
-          # get tile position
-          Cx, Cy = self.IsoToScreen( self.selection[0] + i, self.selection[1] + j )
-
-          # create the iso tile shape
-          tilePoints = self.getIsometricShape(Cx, Cy)
-
-          # draw the border
-          pygame.draw.polygon(self.s, (10, 158, 191), tilePoints, 4)
-
-
-  # draws all entities to the screen
-  def drawEntities(self):
-
-    # iterate through
-    for e in self.entityList:
-      # if e is of type Entity or is a sibling of Entity
-      if e.__class__ == Entity or Entity in e.__class__.__bases__:
-        e.draw()
 
 
   # converts isometric coords into 2d screen coordinates
